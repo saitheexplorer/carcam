@@ -1,10 +1,11 @@
 var RaspiCam = require('raspicam');
 var events = require('events');
+var path = require('path');
 
 var Camera = new events.EventEmitter();
 var CarCam = new RaspiCam({
     mode: 'timelapse',
-    output: __dirname,
+    output: path.join(__dirname, 'photo.jpg'),
     'timelapse': 1000
 });
 
@@ -21,12 +22,12 @@ Camera.disarm = function (data) {
 };
 
 Camera.on('arm', function () {
-    // CarCam.start();
+    CarCam.start();
     console.log('camera armed');
 });
 
 Camera.on('disarm', function () {
-    // CarCam.stop();
+    CarCam.stop();
     console.log('camera disarmed');
 });
 
