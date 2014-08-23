@@ -1,5 +1,23 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    script.
+        function updateButton(data) {
+            if (data.status === 'active') {
+                $('#activateButton').removeClass('success').addClass('alert').text('Disarm');
+            } else {
+                $('#activateButton').removeClass('alert').addClass('success').text('Activate');
+            }
+        }
+
+        $(document).ready(function () {
+            updateButton({status: '!{cameraStatus}'});
+
+            $('#activateButton').on('click', function () {
+                $.post('/', updateButton);
+            });
+        });
+
+    .small-8.small-centered.columns
+        h1.text-center #{title}
+        button#activateButton.button.radius.expand.success Activate
