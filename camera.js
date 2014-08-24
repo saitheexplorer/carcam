@@ -5,8 +5,9 @@ var path = require('path');
 var Camera = new events.EventEmitter();
 var CarCam = new RaspiCam({
     mode: 'timelapse',
+    timeout: 30000,
     output: path.join(__dirname, 'public/images/photo_latest.jpg'),
-    'timelapse': 1000
+    timelapse: 1000
 });
 
 Camera.status = 'inactive';
