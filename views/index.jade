@@ -2,22 +2,34 @@ extends layout
 
 block content
     script.
-        function updateButton(data) {
+        var cameraStatus = 'inactive';
+
+        function toggleCamera(data) {
+            cameraStatus = data.status;
+
             if (data.status === 'active') {
                 $('#activateButton').removeClass('success').addClass('alert').text('Disarm');
             } else {
                 $('#activateButton').removeClass('alert').addClass('success').text('Activate');
+                $('#latest').empty();
             }
         }
 
+        setInterval(function () {
+            if (cameraStatus === 'active') {
+                $('#latest').html($('<img/>').attr('src', '/images/photo_latest.jpg?_=' + new Date().getTime()));
+            }
+        }, 1000)
+
         $(document).ready(function () {
-            updateButton({status: '!{cameraStatus}'});
+            toggleCamera({status: '!{cameraStatus}'});
 
             $('#activateButton').on('click', function () {
-                $.post('/', updateButton);
+                $.post('/', toggleCamera);
             });
         });
 
-    .small-8.small-centered.columns
+    #wrapper.small-8.small-centered.columns
         h1.text-center #{title}
         button#activateButton.button.radius.expand.success Activate
+        #latest
